@@ -1,0 +1,5 @@
+## Interface: 11200
+## Title: Dropolost
+## Notes: Disables navigational features.
+Dropolost.lua
+Dropolost.xml
