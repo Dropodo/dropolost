@@ -1,27 +1,30 @@
 --font used for error and system messages (the ones in the upper center of the screen, e.g. "Not enough mana")
-dropohobo_errorfont_native = ""
+dropolost_errorfont_native = ""
 --font's height. 1 is a placeholder, the actual value is gotten upon loading the addon
-dropohobo_errorfont_height = 1
+dropolost_errorfont_height = 1
 --blank font. All symbols in this font are blank. Used in hiding the exploration system messages.
-dropohobo_errorfont_blank = "Interface\\AddOns\\Dropohobo\\BLANK.ttf"
+dropolost_errorfont_blank = "Interface\\AddOns\\Dropolost\\BLANK.ttf"
+
+dropolost_texture_minimap_mask = "Interface\\AddOns\\Dropolost\\mask"
+dropolost_texture_minimap_frame = "Interface\\AddOns\\Dropolost\\minimapframe"
 
 function Dropolost_OnLoad()
 	--get the default font for system messages
 	local kids = {UIErrorsFrame:GetRegions()}
-	dropohobo_errorfont_native,dropohobo_errorfont_height = kids[1]:GetFont()
+	dropolost_errorfont_native,dropolost_errorfont_height = kids[1]:GetFont()
 	
 	--subscribe to the world map event so we can deny opening the map
 	this:RegisterEvent("WORLD_MAP_UPDATE")
 
 	--disable minimap satellite texture
-	Minimap:SetMaskTexture("Interface\\AddOns\\Dropohobo\\mask");
+	Minimap:SetMaskTexture(dropolost_texture_minimap_mask);
 	
 	--make the minimap border semi-transparent
 	--MinimapBackdrop:SetAlpha(0.5);
-	
+
 	--change the minimap frame to Terra Incognita
 	local kids = {MinimapBackdrop:GetRegions()}
-	kids[1]:SetTexture("Interface\\AddOns\\Dropohobo\\minimapframe")
+	kids[1]:SetTexture(dropolost_texture_minimap_frame)
 	
 	--hide all unnecessary buttons around the minimap
 	GameTimeFrame:Hide();
@@ -80,14 +83,14 @@ function Dropolost_Update()
 	--also update fonts, this is needed because otherwise the Discovery message will be visible for a single frame
 	local kids = {UIErrorsFrame:GetRegions()}
 	for _,child in kids do
-		child:SetFont(dropohobo_errorfont_blank,dropohobo_errorfont_height)
+		child:SetFont(dropolost_errorfont_blank,dropolost_errorfont_height)
 		if child:GetText() then
 			if strsub(child:GetText(),1,12)=="Discovered: " then
 				child:SetText("Discovered a new location.")
 			elseif child:GetAlpha()==0 then
-				child:SetFont(dropohobo_errorfont_blank,dropohobo_errorfont_height)
+				child:SetFont(dropolost_errorfont_blank,dropolost_errorfont_height)
 			else
-				child:SetFont(dropohobo_errorfont_native,dropohobo_errorfont_height)
+				child:SetFont(dropolost_errorfont_native,dropolost_errorfont_height)
 			end
 		end
 	end
